@@ -18,7 +18,7 @@ var BootstrapModal = React.createClass({
   componentDidMount: function() {
     // When the component is added, turn it into a modal
     $(this.getDOMNode())
-      .modal({backdrop: 'static', keyboard: false, show: false})
+      .modal({backdrop: 'static', keyboard: false, show: false});
   },
   componentWillUnmount: function() {
     $(this.getDOMNode()).off('hidden', this.handleHidden);
@@ -96,8 +96,8 @@ var Dropdown = React.createClass({
     });
     return (
       <div class="form-group">
-        <label for={this.props.id}>{this.props.labe}]</label>
-        <select class="form-group">
+        <label for={this.props.id}>{this.props.label}</label>
+        <select className="form-group">
           {options}
         </select>
       </div>
@@ -106,14 +106,17 @@ var Dropdown = React.createClass({
 });
 
 var Example = React.createClass({
- var cities = [
- {"Finland" : ["Helsinki", "Tampere", "Oulu"]},
- {"Sweden" : ["Stockholm", "Gothenburg", "Visby"]}];
+ // var cities = [
+ // {"Finland" : ["Helsinki", "Tampere", "Oulu"]},
+ // {"Sweden" : ["Stockholm", "Gothenburg", "Visby"]}];
 
-  // getInitialState: function() {
-  //   return {            
-  //     cities:{}};
-  // },
+  getInitialState: function() {
+    return {            
+      cities:[
+        {"Finland" : ["Helsinki", "Tampere", "Oulu"]},
+        {"Sweden" : ["Stockholm", "Gothenburg", "Visby"]}]
+      };
+  },
   handleCancel: function() {
     if (confirm('Are you sure you want to cancel?')) {
       this.refs.modal.close();
@@ -121,7 +124,7 @@ var Example = React.createClass({
   },
   render: function() {
     var modal = null;
-    var countries = _.map(data, function(value, key){
+    var countries = _.map(this.state.cities, function(value, key){
         return key;
     });
     modal = (
@@ -132,8 +135,8 @@ var Example = React.createClass({
         onCancel={this.handleCancel}
         onConfirm={this.closeModal}
         title="Choose a city">
-          <Dropdown entries={data}/>
-          <Dropdown entries={cities}/>          
+          <Dropdown entries={countries}/>
+          <Dropdown entries={this.state.cities}/>          
       </BootstrapModal>
     );
     return (
