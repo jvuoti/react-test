@@ -89,15 +89,16 @@ var BootstrapModal = React.createClass({
 
 var Dropdown = React.createClass({
   render: function(){
+    var {entries, ...other} = this.props;
     var options = _.map(this.props.entries, function(entry){
       return (        
         <option value={entry}>{entry}</option>
       );
     });
     return (
-      <div class="form-group">
+      <div className="form-group">
         <label for={this.props.id}>{this.props.label}</label>
-        <select className="form-group">
+        <select className="form-group" {...other}>
           {options}
         </select>
       </div>
@@ -106,16 +107,11 @@ var Dropdown = React.createClass({
 });
 
 var Example = React.createClass({
- // var cities = [
- // {"Finland" : ["Helsinki", "Tampere", "Oulu"]},
- // {"Sweden" : ["Stockholm", "Gothenburg", "Visby"]}];
-
   getInitialState: function() {
-    return {            
-      cities:[
-        {"Finland" : ["Helsinki", "Tampere", "Oulu"]},
-        {"Sweden" : ["Stockholm", "Gothenburg", "Visby"]}]
-      };
+    var state = {
+      selectedCountry: "Finland"
+    };
+    return state;
   },
   handleCancel: function() {
     if (confirm('Are you sure you want to cancel?')) {
@@ -123,22 +119,26 @@ var Example = React.createClass({
     }
   },
   render: function() {
-    var modal = null;
-    var countries = _.map(this.state.cities, function(value, key){
-        return key;
-    });
-    modal = (
-      <BootstrapModal
+    var cities = {
+        "Finland": ["Helsinki", "Tampere", "Oulu"],
+        "Sweden": ["Stockholm", "Gothenburg", "Visby"]
+      }
+    var countries = Object.keys(cities);
+    var selectedCountry = this.state.selectedCountry;
+    var citiesForSelectedCountry = cities[this.state.selectedCountry];
+
+    var modal = ( 
+      <BootstrapModal 
         ref="modal"
         confirm="OK"
         cancel="Cancel"
         onCancel={this.handleCancel}
         onConfirm={this.closeModal}
         title="Choose a city">
-          <Dropdown entries={countries}/>
-          <Dropdown entries={this.state.cities}/>          
+        <Dropdown entries={countries} onChange={this.changeCountry}/>
+        <Dropdown entries={citiesForSelectedCountry}/>          
       </BootstrapModal>
-    );
+      );
     return (
       <div className="example">
         {modal}
@@ -146,13 +146,16 @@ var Example = React.createClass({
           Open modal
         </BootstrapButton>
       </div>
-    );
+      );
   },
   openModal: function() {
     this.refs.modal.open();
   },
   closeModal: function() {
     this.refs.modal.close();
+  },
+  changeCountry: function(event){
+    this.setState({selectedCountry: event.target.value});
   }
 });
 

@@ -1,5 +1,5 @@
 // Include gulp
-var gulp = require('gulp'); 
+var gulp = require('gulp');
 
 // Include Our Plugins
 var jshint = require('gulp-jshint');
@@ -10,9 +10,12 @@ var rename = require('gulp-rename');
 var react = require('gulp-react');
 
 // react compilation task
-gulp.task('react', function(){
+gulp.task('react', function() {
     return gulp.src('js/*.jsx')
-        .pipe(react())
+        .pipe(react({
+            harmony: true,
+            esnext: true
+        }))
         .pipe(gulp.dest('js'));
 });
 
@@ -23,7 +26,7 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
-// Compile Our Sass
+// Compile Our less
 gulp.task('less', function() {
     return gulp.src('less/*.less')
         .pipe(less())
