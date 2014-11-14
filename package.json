@@ -1,14 +1,16 @@
 {
   "name": "react-test",
   "version": "1.0.0",
-  "description": "",
+  "description": "Test app for react",
   "main": "index.htm",
+  "repository": "https://github.com/jvuoti/react-test",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Janne Vuoti",
   "license": "MIT",
   "devDependencies": {
+    "express": "^4.10.2",
     "gulp": "^3.8.9",
     "gulp-concat": "^2.4.1",
     "gulp-jshint": "^1.8.6",
