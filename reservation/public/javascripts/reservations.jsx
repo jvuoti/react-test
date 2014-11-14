@@ -91,4 +91,4 @@ var Reservations = React.createClass({
   }
 });
 
-React.render(<Reservations citiesDataUrl="/cityData" reservationUrl="/reserve" />, document.getElementById('reservations'));
+React.render(<Reservations citiesDataUrl="/api/cityData" reservationUrl="/api/reserve" />, document.getElementById('reservations'));
