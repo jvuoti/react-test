@@ -31,14 +31,23 @@ var BootstrapButton = React.createClass({
 var Reservations = React.createClass({
   getInitialState: function() {
     var state = {
-      cities: {
-        "Finland": ["Helsinki", "Tampere", "Oulu"],
-        "Sweden": ["Stockholm", "Gothenburg", "Visby"]
-      },
+      cities: {},
       selectedCountry: "Finland",
       selectedCity: "Helsinki"
     };
     return state;
+  },
+  componentDidMount: function() {
+    $.ajax({
+      url: this.props.citiesDataUrl,
+      dataType: 'json',
+      success: function(data) {
+        this.setState({cities: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.citiesDataUrl, status, err.toString());
+      }.bind(this)
+    });
   },
   render: function() {
 
@@ -64,8 +73,22 @@ var Reservations = React.createClass({
     this.setState({selectedCity: event.target.value});
   },
   submit: function(){
-
+    $.ajax({
+      type: "POST",
+      url: this.props.reservationUrl,
+      dataType: 'json',
+      data: {
+        'country': this.state.selectedCountry,
+        'city': this.state.selectedCity
+      },
+      success: function(data) {
+        console.log("Successful submit");
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.citiesDataUrl, status, err.toString());
+      }.bind(this)
+    })
   }
 });
 
-React.render(<Reservations />, document.getElementById('reservations'));
+React.render(<Reservations citiesDataUrl="/cityData" reservationUrl="/reserve" />, document.getElementById('reservations'));
