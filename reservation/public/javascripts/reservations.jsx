@@ -42,7 +42,11 @@ var Reservations = React.createClass({
       url: this.props.citiesDataUrl,
       dataType: 'json',
       success: function(data) {
-        this.setState({cities: data});
+        var cityData = {};
+        data.forEach(function(entry){
+          cityData[entry.country] = entry.cities;
+        });
+        this.setState({cities: cityData});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.citiesDataUrl, status, err.toString());
