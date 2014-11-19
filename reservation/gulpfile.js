@@ -11,17 +11,18 @@ var react = require('gulp-react');
 
 // react compilation task
 gulp.task('react', function() {
-    return gulp.src('public/javascripts/*.jsx')
+    return gulp.src(['public/javascripts/elements/*.jsx','public/javascripts/*.jsx'])
         .pipe(react({
             harmony: true,
             esnext: true
         }))
-        .pipe(gulp.dest('public/javascripts'));
+        .pipe(concat("build.js"))
+        .pipe(gulp.dest('public/javascripts/build'));
 });
 
 // Lint Task
 gulp.task('lint', function() {
-    return gulp.src('public/javascripts/*.js')
+    return gulp.src(['public/javascripts/build/*.js', 'public/javascripts/*.js'])
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
@@ -35,7 +36,7 @@ gulp.task('less', function() {
 
 // Concatenate & Minify JS
 gulp.task('scripts', function() {
-    return gulp.src('public/javascripts/*.js')
+    return gulp.src(['public/javascripts/build/*.js', 'public/javascripts/*.js'])
         .pipe(concat('all.js'))
         .pipe(gulp.dest('public/javascripts/dist'))
         .pipe(rename('all.min.js'))
@@ -45,8 +46,8 @@ gulp.task('scripts', function() {
 
 // Watch Files For Changes
 gulp.task('watch', function() {
-    gulp.watch('public/javascripts/*.jsx', ['react']);
-    gulp.watch('public/javascripts/*.js', ['lint', 'scripts']);
+    gulp.watch('public/javascripts/**/*.jsx', ['react']);
+    gulp.watch('public/javascripts/**/.js', ['lint', 'scripts']);
     gulp.watch('public/stylesheets/less/*.less', ['less']);
 });
 
