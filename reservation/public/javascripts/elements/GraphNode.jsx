@@ -1,14 +1,15 @@
 var GraphNode = React.createClass({
 	render: function(){
+		var {top, left, text, ...other} = this.props;
 		var nodeStyle = {
 			position: "absolute",
-			top: this.props.top,
-			left: this.props.left
+			top: top,
+			left: left
 		};
 
 		return (
-			<div className="node" style={nodeStyle}>
-				<span>{this.props.text}</span>
+			<div className="graph-node" style={nodeStyle} {...other}>
+				<span className="label label-primary">{text}</span>
 			</div>
 		);
 	}

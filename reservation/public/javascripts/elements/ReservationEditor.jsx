@@ -1,9 +1,9 @@
 var ReservationEditor = React.createClass({
-  getInitialState: function() {
+  getInitialState: function() {      
     var state = {
       cities: {},
-      selectedCountry: "Finland",
-      selectedCity: "Helsinki"
+      selectedCountry: this.props.selectedCountry || "Finland",
+      selectedCity: this.props.selectedCity || "Helsinki"
     };
     return state;
   },
@@ -25,7 +25,7 @@ var ReservationEditor = React.createClass({
   },
   render: function() {
 
-    var {...other} = this.props;
+    var {...other} = this.props;    
     var countries = Object.keys(this.state.cities);
     var selectedCountry = this.state.selectedCountry;
     var citiesForSelectedCountry = this.state.cities[this.state.selectedCountry];
@@ -48,16 +48,16 @@ var ReservationEditor = React.createClass({
     this.setState({selectedCity: event.target.value});
   },
   submit: function(){
+    var selectionData = {
+        'country': this.state.selectedCountry,
+        'city': this.state.selectedCity
+      };
     $.ajax({
       type: "POST",
       url: this.props.reservationUrl,
-      dataType: 'json',
-      data: {
-        'country': this.state.selectedCountry,
-        'city': this.state.selectedCity
-      },
+      data: selectionData,
       success: function(data) {
-        console.log("Successful submit");
+        this.props.onSave(selectionData);
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.citiesDataUrl, status, err.toString());

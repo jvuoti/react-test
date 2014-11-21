@@ -8,7 +8,7 @@ var Dropdown = React.createClass({
     });
     return (
       <div className="form-group">
-        <label className="form-label" for={this.props.id}>{this.props.label}</label>
+        <label className="form-label" htmlkFor={this.props.id}>{this.props.label}</label>
         <select className="form-control" id={this.props.id} value={this.props.selectedValue} {...other}>
           {options}
         </select>
