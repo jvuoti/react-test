@@ -1,0 +1,6 @@
+{
+  "name": "reservation",
+  "dependencies": {
+    "bootstrap": "~3.3.1"
+  }
+}

@@ -31,7 +31,8 @@ gulp.task('lint', function() {
 gulp.task('less', function() {
     return gulp.src('public/stylesheets/less/*.less')
         .pipe(less())
-        .pipe(gulp.dest('css'));
+        .pipe(concat('app.css'))
+        .pipe(gulp.dest('public/stylesheets/dist'));
 });
 
 // Concatenate & Minify JS
