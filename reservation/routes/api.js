@@ -13,13 +13,19 @@ db.citiesByCountry = new Datastore({
 
 // TODO: add CRUD support for adding new cities and data
 var addCityByCountry = function(country, city) {
-	db.citiesByCountry.update({country: country}, {$push: {cities: city}}, {upsert: true}, function(err) {
-		if(err){
-			console.error(err);
-		} else {
-			console.log("Added city '%s' for country '%s'.", city, country);
+	db.citiesByCountry.find({country: country}, function(err, docs) {
+		if (err) {
+			console.log(err)
+		} else if (docs.length === 0) {
+			db.citiesByCountry.update({country: country}, {$push: {cities: city}}, {upsert: true}, function(err) {
+				if (err) {
+					console.error(err);
+				} else {
+					console.log("Added city '%s' for country '%s'.", city, country);
+				}
+			});
 		}
-	})
+	});
 };
 
 addCityByCountry("Finland", "Helsinki");
