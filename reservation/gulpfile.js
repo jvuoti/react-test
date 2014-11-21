@@ -47,7 +47,7 @@ gulp.task('scripts', function() {
 // Watch Files For Changes
 gulp.task('watch', function() {
     gulp.watch('public/javascripts/**/*.jsx', ['react']);
-    gulp.watch('public/javascripts/**/.js', ['lint', 'scripts']);
+    gulp.watch('public/javascripts/**/*.js', ['lint', 'scripts']);
     gulp.watch('public/stylesheets/less/*.less', ['less']);
 });
 
