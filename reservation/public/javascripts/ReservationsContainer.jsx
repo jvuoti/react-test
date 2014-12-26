@@ -26,7 +26,7 @@ var ReservationsContainer = React.createClass({
 		this.setState({nodes: newNodes});		
 	},
 	showNewReservation: function(){
-
+		
 	},
 	selectNode: function(nodeName){
 		console.log("selected node", nodeName);

@@ -3,7 +3,8 @@ var ReservationEditor = React.createClass({
     var state = {
       cities: {},
       selectedCountry: this.props.selectedCountry || "Finland",
-      selectedCity: this.props.selectedCity || "Helsinki"
+      selectedCity: this.props.selectedCity || "Helsinki",
+      editor: '<div/>'
     };
     return state;
   },
@@ -33,7 +34,8 @@ var ReservationEditor = React.createClass({
     return (
       <div id="reservationEditor" {...other}>
         <Dropdown id="country" label="Country" entries={countries} selectedValue={this.state.selectedCountry} onChange={this.changeCountry}/>
-        <Dropdown id="city" label="City" entries={citiesForSelectedCountry} selectedValue={this.state.selectedCity} onChange={this.changeCity}/>
+        <Dropdown id="city" label="City" entries={citiesForSelectedCountry} selectedValue={this.state.selectedCity} onChange={this.changeCity}/> 
+        {this.state.editor}
         <BootstrapButton text="Submit" onClick={this.submit}/>
       </div>
       );
@@ -46,11 +48,24 @@ var ReservationEditor = React.createClass({
   },
   changeCity: function(event){
     this.setState({selectedCity: event.target.value});
+     $.ajax({
+      url: '/api/editor/' +event.target.value,
+      dataType: 'html',
+      success: function(data) {
+        this.setState({editor: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.city, status, err.toString());
+      }.bind(this)
+    });
+    
+
   },
   submit: function(){
     var selectionData = {
-        'country': this.state.selectedCountry,
-        'city': this.state.selectedCity
+        country: this.state.selectedCountry,
+        city: this.state.selectedCity,
+        data: this.state
       };
     $.ajax({
       type: "POST",
