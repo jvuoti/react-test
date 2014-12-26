@@ -8,6 +8,10 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var react = require('gulp-react');
+var mainBowerFiles = require('main-bower-files');
+var filelog = require('gulp-filelog');
+var filter = require('gulp-filter');
+var mergeStream = require('merge-stream');
 
 // react compilation task
 gulp.task('react', function() {
@@ -37,12 +41,22 @@ gulp.task('less', function() {
 
 // Concatenate & Minify JS
 gulp.task('scripts', function() {
-    return gulp.src(['public/javascripts/build/*.js', 'public/javascripts/*.js'])
-        .pipe(concat('all.js'))
-        .pipe(gulp.dest('public/javascripts/dist'))
-        .pipe(rename('all.min.js'))
-        .pipe(uglify())
+    var libFiles = mainBowerFiles();
+    libFiles.push('public/javascripts/lib/*.js');
+
+    var lib = gulp.src(libFiles)
+        .pipe(filter('*.js'))
+        .pipe(filelog())
+        .pipe(concat('lib.js'))
         .pipe(gulp.dest('public/javascripts/dist'));
+
+    var app = gulp.src(['public/javascripts/build/*.js'])
+        .pipe(filter('*.js'))
+        .pipe(filelog())
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest('public/javascripts/dist'))
+
+    return mergeStream([lib, app]);
 });
 
 // Watch Files For Changes
