@@ -35,8 +35,8 @@ var ReservationEditor = React.createClass({
       <div id="reservationEditor" {...other}>
         <Dropdown id="country" label="Country" entries={countries} selectedValue={this.state.selectedCountry} onChange={this.changeCountry}/>
         <Dropdown id="city" label="City" entries={citiesForSelectedCountry} selectedValue={this.state.selectedCity} onChange={this.changeCity}/> 
-        {this.state.editor}
-        <BootstrapButton text="Submit" onClick={this.submit}/>
+        <BootstrapButton text="Submit" onClick={this.submit}/>        
+        <div className="dynamicForm" dangerouslySetInnerHTML={{__html: this.state.editor}}></div>
       </div>
       );
   },
@@ -65,8 +65,9 @@ var ReservationEditor = React.createClass({
     var selectionData = {
         country: this.state.selectedCountry,
         city: this.state.selectedCity,
-        data: this.state
+        additionalData: $(".dynamicForm :input").serializeArray()
       };
+
     $.ajax({
       type: "POST",
       url: this.props.reservationUrl,

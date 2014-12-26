@@ -58,7 +58,7 @@ router.post('/reserve', function(req, res) {
 });
 
 router.get('/editor/:city', function(req, res){
-	res.render('Helsinki');//.params.city);
+	res.render('Helsinki', {layout: false});//.params.city);
 });
 
 module.exports = router;
